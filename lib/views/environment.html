@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h3>Process Environment</h3>
+<table>
+{% for setting in env %}
+<tr>
+	<td>{{ forloop.key }}</td>
+	<td>{{ setting }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

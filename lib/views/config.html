@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Steelmesh Config</h2>
+{{ config }}
+
+<h2>Indvidual Config Files</h2>
+
+{% for file in configFiles %}
+<h3>{{ forloop.key }}</h3>
+<p>{{ file }}</p>
+{% endfor %}
+{% endblock %}

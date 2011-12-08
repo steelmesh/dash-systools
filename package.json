@@ -1,0 +1,31 @@
+{
+    "name": "dash-systools",
+    "description": "Steelmesh Dashboard System Tools Plugin",
+    "author": "Damon Oehlman <damon.oehlman@sidelab.com>",
+    "tags": ["steelmesh", "dashboard"],
+    "version": "0.0.1",
+    
+    "main": "index.js",
+    "engines": { "node": ">= 0.4.x < 0.7.0" },
+        
+    "dependencies": {
+        "debug": "*"
+    },
+    
+    "devDependencies": {
+    },
+    
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/steelmesh/dash-systools.git"
+    },
+    
+    "bugs": {
+        "url": "http://github.com/steelmesh/dash-systools/issues"
+    },
+    
+    "contributors": [
+    ],
+    
+    "private": true
+}

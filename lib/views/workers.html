@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h3>Steelmesh Worker Processes</h3>
+<table>
+<tr>
+	<th>PID</th>
+	<th>Active</th>
+	<th>Started</th>
+	<th>Stopped</th>
+</tr>
+{% for worker in workers %}
+<tr>
+	<td>{{ worker.pid }}</td>
+	<td>{{ worker.active }}</td>
+	<td>{{ worker.started }}</td>
+	<td>{{ worker.stopped }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
