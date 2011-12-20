@@ -12,10 +12,22 @@
 {% for worker in workers %}
 <tr>
 	<td>{{ worker.pid }}</td>
-	<td>{{ worker.active }}</td>
+	<td>
+		<span class="label {{ worker.status }}" 
+			  {% if worker.help %}
+			  data-placement="right" title="{{ worker.help }}"
+			  {% endif %}>
+			  {% if worker.active %}active{% else %}dead{% endif %}
+		</span>
+	</td>
 	<td>{{ worker.started }}</td>
-	<td>{{ worker.stopped }}</td>
+	<td>{{ worker.shutdown }}</td>
 </tr>
 {% endfor %}
 </table>
+<script>
+$(function() {
+	$().twipsy();	
+});
+</script>
 {% endblock %}

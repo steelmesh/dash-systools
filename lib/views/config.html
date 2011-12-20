@@ -2,12 +2,20 @@
 
 {% block content %}
 <h2>Steelmesh Config</h2>
-{{ config }}
+<pre>{{ config }}</pre>
 
 <h2>Indvidual Config Files</h2>
 
 {% for file in configFiles %}
 <h3>{{ forloop.key }}</h3>
-<p>{{ file }}</p>
+<pre>{{ file }}</pre>
 {% endfor %}
+<script src="http://jsonlint.com/c/js/jsl.format.js"></script>
+<script>
+$(function() {
+	$('pre').each(function() {
+		this.innerText = jsl.format.formatJson(this.innerText);
+	});
+});
+</script>
 {% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<script>
+var reException = /\$\{exception\:(\d+)\}/,
+    exceptionBox,
+    logFormatters = {
+        access: function(lines) {
+            var output = '';
+            
+            for (var ii = 0, lineCount = lines.length; ii < lineCount; ii++) {
+                output += '<tr><td>' + lines[ii] + '</td></tr>';
+            }
+        
+            return output;
+        },
+    
+        events: function(lines) {
+            var output = '';
+        
+            for (var ii = 0, lineCount = lines.length; ii < lineCount; ii++) {
+                if (lines[ii]) {
+                    var fields = lines[ii].split(' '),
+                        message = fields.slice(3).join(' '),
+                        exceptionMatch = reException.exec(message);
+
+                    // replace exceptions with relevant html
+                    while (exceptionMatch) {
+                        message = message.slice(0, exceptionMatch.index) + 
+                            '<span class="sm-exception label important" href="#">' + exceptionMatch[1] + '</span>' +
+                            message.slice(exceptionMatch.index + exceptionMatch[0].length);
+                            
+                        exceptionMatch = reException.exec(message);
+                    }
+                
+                    output += 
+                        '<tr>' + 
+                            '<td>' + fields[0] + '</td>' + 
+                            '<td>' + fields[1] + '</td>' + 
+                            '<td>' + fields[2] + '</td>' + 
+                            '<td>' + message +
+                        '</tr>';
+                }
+            }
+
+            return output;
+        }
+    };
+
+function _changeLog(targetLog) {
+    $.ajax({
+        url: '/system/log/' + targetLog,
+        dataType: 'json',
+        success: function(data) {
+            var formatter = logFormatters[data.type],
+                logLines = $('#loglines');
+                
+            if (! exceptionBox) {
+                exceptionBox = $('#exception-details');
+                exceptionBox.modal({ keyboard: true, show: false });
+            }
+                
+            if (formatter) {
+                logLines.html(formatter(data.lines));
+                $('.sm-exception', logLines).on('click', function() {
+                    $.ajax({
+                        url: '/system/exception/' + $(this).text(),
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.stack) {
+                                $('h3', exceptionBox).html(data.message || '');
+                                $('.modal-body', exceptionBox).html('<pre>' + data.stack + '</pre>');
+                            }
+                            else if (data.err) {
+                                $('h3', exceptionBox).html('Could not load exception details');
+                                $('.modal-body', exceptionBox).html('<pre>' + data.err + '</pre>');
+                            }
+                                
+                            exceptionBox.modal('show');
+                        }
+                    });
+                });
+                
+            }
+        }
+    });
+} // _changeLog
+</script>
+<ul class="pills">
+	{% for log in logs %}
+		<li><a href="#" class='log'>{{ log }}</a></li>
+	{% endfor %}
+</ul>
+
+<div id="exception-details" class="modal hide">
+	<div class="modal-header">
+		<a href="#" class="close">&times;</a>
+		<h3></h3>
+	</div>
+	<div class="modal-body">
+	</div>
+</div>
+
+<table id="loglines">
+</table>
+<p>
+	<a href="/system/logs/download" class="btn">Download Logs</a>
+</p>
+<script>
+$('a.log').click(function() {
+    $('.pills li').removeClass('active');
+    $(this).parent().addClass('active');
+    
+    _changeLog($(this).text());
+});
+</script>
+{% endblock %}
