@@ -1,7 +1,13 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h3>Steelmesh Worker Processes</h3>
+<h2>Workers</h2>
+<p>There are currently {{ activeCount }} active worker processes.</p>
+<div class="well">
+	<a class="btn danger" href="/system/recycle">Recycle Workers and Monitor</a>
+</div>
+
+<h3>Worker Processes</h3>
 <table>
 <tr>
 	<th>PID</th>
