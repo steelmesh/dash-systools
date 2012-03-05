@@ -2,12 +2,20 @@
 
 {% block content %}
 <h3>Process Environment</h3>
-<table>
-{% for setting in env %}
-<tr>
-	<td>{{ forloop.key }}</td>
-	<td>{{ setting }}</td>
-</tr>
-{% endfor %}
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for setting in env %}
+    <tr>
+    	<td>{{ loop.key }}</td>
+    	<td>{{ setting }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
 </table>
 {% endblock %}
